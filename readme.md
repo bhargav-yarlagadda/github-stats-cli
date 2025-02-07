@@ -7,7 +7,7 @@ A simple CLI tool that interacts with the GitHub API to perform several actions 
 
 ## Features
 - List all repositories for a given GitHub username.
-- Display the `README.md` of a specific repository if it exists.
+- Display the `README.md` of a specific repository if it exists. c,
 - List repositories in the format: `reponame - repolink`.
 
 ## Prerequisites
@@ -16,13 +16,16 @@ A simple CLI tool that interacts with the GitHub API to perform several actions 
 - An active internet connection to interact with the GitHub API.
 
 ## Commands
-1. user <username>        - Fetch and display GitHub user stats
-2. activity <username>    - Fetch and display recent activity for the GitHub user
-3. read username reponame - Fetch and display readme of the repository
-4. exit                   - Exit the program
-5. list username          - Fetch and display list of all public repository names of a user
-6. help                   - Display the list of available commands and their syntax
-
+1. user <username>               - Fetch and display GitHub user stats
+2. activity <username>           - Fetch and display recent activity for the GitHub user
+3. read <username> <reponame>    - Fetch and display readme of the repository
+4. exit                          - Exit the program
+5. list <username>               - Fetch and display list of all public repository names of a user
+6. help                          - Display the list of available commands and their syntax
+7. set <githubtoken>             - Validates and sets PAT or Fine Tuned Token to authenticate user.
+8. unset                         - Clears stored token 
+9. fork <username> <reponame>    - Forks repository into authenticated user's github. 
+ 
 ## Installation
 
 1. Clone the repository:

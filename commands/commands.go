@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github-stats-cli/utils"
+	"os"
 )
 
 // Define a type for command functions
@@ -21,6 +22,13 @@ func InitCommands() {
 	registerCommand("help",HelpCommand)
 	registerCommand("read",ReadmeCommand)
 	registerCommand("list",ListCommand)
+	registerCommand("set",SetTokenCommand)
+	registerCommand("fork",ForkRepositoryCommand)
+	registerCommand("unset",UnsetTokenCommand)
+	registerCommand("clear",ClearCommand)
+
+
+
 }
 
 // Register a command to the map
@@ -28,7 +36,13 @@ func registerCommand(cmd string, fn cmdFnc) {
 	Commands[cmd] = fn
 }
 
+func ClearCommand(args []string){
+	utils.ClearScreen()
+}
 
+func UnsetTokenCommand(args[] string){
+	utils.UnsetToken()
+}
 func ReadmeCommand(args []string) {
 	// Check if the username and repository name arguments are passed
 	if len(args) < 2 {
@@ -58,14 +72,44 @@ func HelpCommand(args []string) {
 	fmt.Println("Welcome to the GitHub Stats CLI!")
 	fmt.Print("\nAvailable Commands:\n")
 
-	// List all commands and their short descriptions
+	// List all commands and their shor t descriptions
 	fmt.Println("1. user <username>        - Fetch and display GitHub user stats")
 	fmt.Println("2. activity <username>    - Fetch and display recent activity for the GitHub user")
 	fmt.Println("3. read username reponame - Fetch and display readme of the repository")
 	fmt.Println("4. exit                   - Exit the program")
-	fmt.Println("2. list username          - Fetch and display list of all public repository names of a user.")
-	
+	fmt.Println("5. list username          - Fetch and display list of all public repository names of a user.")
+	fmt.Println("6. set githubToken        - sets token to authorize user to perform fork and start.")	
+	fmt.Println("7. fork username reponame - sets token to authorize user to perform fork and start.")	
+	fmt.Println("8. unset                  - clears token data.")	
+	fmt.Println("9. clear                  - clears screen (std out)")	
 }
+
+
+func SetTokenCommand(args []string){
+	token := args[0]
+	if token == ""{
+		fmt.Fprint(os.Stdout,"please enter token")
+		
+	}else{
+		utils.SetToken(token)
+	}
+	 
+}
+
+func ForkRepositoryCommand(args []string){
+	fmt.Fprintf(os.Stdout,"Make Sure You have set the classic PAT gihub-api token instead of fine-tuned tokens that has access to public repos and repos.\n")
+	if len(args) < 2 {
+		fmt.Println("Please provide a GitHub username and repository name as argument.")
+		return
+	}else{
+		username:=args[0]
+		repoName :=args[1]
+		err :=utils.ForkRepository(username,repoName)
+		fmt.Fprint(os.Stdout,err)
+	}
+}
+
+
 func FetchUserActivityCommand(args []string) {
 	// Check if the username argument is passed
 	if len(args) < 1 {
