@@ -110,6 +110,20 @@ func ForkRepositoryCommand(args []string){
 }
 
 
+func StarRepositoryCommand(args []string){
+	fmt.Fprintf(os.Stdout,"Make Sure You have set the classic PAT gihub-api token instead of fine-tuned tokens that has access to public repos and repos.\n")
+	if len(args) < 2 {
+		fmt.Println("Please provide a GitHub username and repository name as argument.")
+		return
+	}else{
+		username:=args[0]
+		repoName:=args[1]
+		err :=utils.StarRepository(username,repoName)
+		fmt.Fprint(os.Stdout,err)
+	}
+}
+
+
 func FetchUserActivityCommand(args []string) {
 	// Check if the username argument is passed
 	if len(args) < 1 {

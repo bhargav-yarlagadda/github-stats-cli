@@ -278,3 +278,34 @@ func ClearScreen() {
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 }
+
+func StarRepository(owner, repo string) error {
+	url := fmt.Sprintf("https://api.github.com/user/starred/%s/%s", owner, repo)
+
+	if githubToken == "" {
+		return fmt.Errorf("GitHub token is not set. Use 'set' to set your token first \n")
+	}
+
+	req, err := http.NewRequest("PUT", url, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create request: %v \n", err)
+	}
+
+	req.Header.Set("Authorization", "token "+githubToken)
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+	req.Header.Set("Content-Length", "0")
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("request failed: %v \n", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusNoContent {
+		return fmt.Errorf("failed to star repository (status: %d, response: Make sure your token has the required permissions.)\n", resp.StatusCode)
+	}
+
+	fmt.Println("Repository starred successfully!")
+	return nil
+}
